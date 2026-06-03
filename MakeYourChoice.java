@@ -4,12 +4,13 @@ public class MakeYourChoice {
    public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
       boolean hasRaccoon = false;
+      Player player = new Player(30, 5, true);
       System.out.println("This is a little TRPG (text roleplaying game) called Make your choice");
       System.out.println("the controls are quite simple");
       System.out.println("simply just type in words or letters that decide what you will do");
-      System.out.println("FYI, you dont need to worry about cases, but you will need to spell it correctly");
       System.out.println("all choices will be in this format: <A> choiceA | <B> choiceB | <C> choiceC");
       System.out.println("");
+      System.out.println("sorry ahead of time for the spelling errors :p");
       System.out.println("now, State your name little one");
       String name = scanner.nextLine();
       boolean namePicking = true;
@@ -29,7 +30,6 @@ public class MakeYourChoice {
             namePicking = false;
          }
       }
-      Player player = new Player(30, 5, true);
       System.out.println("");
       System.out.println("Start Adventure?");
       System.out.println("");
@@ -173,272 +173,301 @@ public class MakeYourChoice {
                }
             }
          }
-      System.out.println("");
-      System.out.println("after some time of exploration");
-      System.out.println(name + " finds a chest");
-      System.out.println("next to the chest was a sign");
-      System.out.println("on the sign it said:");
-      System.out.println("this chest has a 30 % chance of a healing item, a 20 % chance of it being empty");
-      System.out.println("and a 50 % chance of being a mimic");
-      System.out.println("");
-      System.out.println("dose " + name + " open the chest?");
-      System.out.println("<A> open chest || <B> leave it");
-      boolean chest = true;
-      boolean chestFight = false;
-      while (chest) {
-         String input = scanner.nextLine();
-         if (input.equalsIgnoreCase("A")) {
-            int chestChance = (int)(Math.random() * 10);
-            if (chestChance <= 2) {
-               System.out.println("the chest was empty");
-               chest = false;
-            } else if (chestChance <= 5) {
-               System.out.println("the chest had a healing item");
-               System.out.println("the healing item gives them  10 hit points");
-               player.gainHP(10);
-               chest = false;
-            } else {
-               System.out.println("unlucky for " + name + " the chest was a mimic!");
-               System.out.println("and they don't seem too happy");
-               chestFight = true;
-               chest = false;
-               System.out.println("A brwal begins");
-            }
-         } else if (input.equalsIgnoreCase("B")) {
-            System.out.println(name + " leave the chest un-opened, not wanting to risk it being a mimic");
-            chest = false;
-         } else {
-            System.out.println("i do not understand, could you try again?");
-         }
-      }
-      Monster chestMimic = new Monster(10, 2, true);
-      while (chestFight) {
-         System.out.println("the Mimic attacks");
-         player.takeDMG(chestMimic.monsterAttck());
-         System.out.println(name + " has " + player.getHP() + " hit poins left");
-         System.out.println("what dose " + name + " do?");
-         System.out.println("<A> attack | <B> run away | <C> talk it out");
-         String tempInput2 = scanner.nextLine();
-         if (tempInput2.equalsIgnoreCase("A")) {
-            int tempDMG2 = player.attackDMG();
-            System.out.println("");
-            System.out.println(name + " attacks the chest mimic, dealing " + tempDMG2);
-            chestMimic.MTakeDMG(tempDMG2);
-            System.out.println("chest mimic has : " + chestMimic.getMonsterHP() + " hit points left");
-         } 
-         if (tempInput2.equalsIgnoreCase("B")) {
-            System.out.println("");
-            System.out.println(name + " tries to runs away");
-            int bagOdds = (int)(Math.random() * 10);
-            if (bagOdds < 3) {
-               System.out.println("");
-               System.out.println(name + " is stopped before they can get far");
-               player.takeDMG(chestMimic.monsterAttck());
-               System.out.println(name + " has " + player.getHP() + " hit points left");
-            } else {
-               System.out.println("");
-               System.out.println(name + " gets away");
-               System.out.println(name + " continues on their adventure");
-               chestFight = false;
-            }
-         }
-         if (tempInput2.equalsIgnoreCase("C")) {
-            System.out.println("");
-            System.out.println(name + " tries to talk it out");
-            int bagOdds = (int)(Math.random() * 10);
-            if (bagOdds < 5) {  
-               System.out.println("");
-               System.out.println("the chest mimic dosen't listen and attacks " + name);
-               player.takeDMG(chestMimic.monsterAttck());
-               System.out.println(name + " has " + player.getHP() + " hit points left");
-            } else {
-               System.out.println("");
-               System.out.println(name + " and the chest mimic talk it out");
-               System.out.println("the chest mimic is no longer angry");
-               chestFight = false;
-               System.out.println("");
-               System.out.println("after the encouter with the chest mimic");
-               System.out.println(name + " feels better about themselves");
-               System.out.println(name + " continues on their adventure");
-               player.LVChange(-5);
-            }
-         }
-         if (player.isDead()) {
-         bagFight = false;
-         System.out.println(name + " tried and failed to defeat the chest Mimic");
-         System.out.println(name + " is no longer able to contine on this path and passes out.");
-         System.out.println("Game Over");
-         System.out.println("Thx for playing");
-         System.exit(0);
-         }
-         if (chestMimic.isMonsterDead()) {
-            chestFight = false;
-            player.LVChange(15);
-            System.out.println(name + " murded the chest mimic");
-            System.out.println(name + " hatred for the monsters grow.");
-            System.out.println(name + " heals for 20 hit points");
-            player.gainHP(20);
-         }
-      }
-      System.out.println("");
-      System.out.println(name + " travles once again. exploring the area");
-      System.out.println("the path a head splits");
-      System.out.println("to the right, a dark ally way with a sign that says:");
-      System.out.println("\"ToTallY NoT DangerOuS ShORt CuT\"");
-      System.out.println("on the left is path to a village, with a sign that says");
-      System.out.println("To flurryVill");
-      System.out.println("which way dose " + name + " go?");
-      System.out.println("<A> Right | <B> Left");
-      boolean leftRight = true;
-      boolean shortCut = false;
-      while (leftRight) {
-         String input = scanner.nextLine();
-         if (input.equalsIgnoreCase("A")) {
-            System.out.println(name + " goes right, into the dark ally");
-            System.out.println();
-            shortCut = true;
-            leftRight = false;
-         } else if (input.equalsIgnoreCase("B")) {
-            System.out.println(name + " goes left, into flurryVill");
-            System.out.println();
-            leftRight = false;
-         } else {
-            System.out.println("invalid input, try again");
-         }
-      }
-      if (shortCut) {
-         System.out.println("as " + name + " walks into the dark ally");
-         System.out.println("their path behind them was blocked by fallen bolders!");
-         System.out.println("just as that happens, a gang of monsters apears infront of them");
-         System.out.println("and they don't look frendly");
-         System.out.println("what dose " + name + " do?");
-         System.out.println("<A> make a run for it | <B> fight them head on");
-         boolean choice = true;
-         boolean groupFight = false;
-         while (choice) {
+         System.out.println("");
+         System.out.println("after some time of exploration");
+         System.out.println(name + " finds a chest");
+         System.out.println("next to the chest was a sign");
+         System.out.println("on the sign it said:");
+         System.out.println("this chest has a 30 % chance of a healing item, a 20 % chance of it being empty");
+         System.out.println("and a 50 % chance of being a mimic");
+         System.out.println("");
+         System.out.println("dose " + name + " open the chest?");
+         System.out.println("<A> open chest || <B> leave it");
+         boolean chest = true;
+         boolean chestFight = false;
+         while (chest) {
             String input = scanner.nextLine();
             if (input.equalsIgnoreCase("A")) {
-               System.out.println(name + " makes a run for it");
-               System.out.println("getting out of there before the group of monsters can react");
-               System.out.println();
-               choice = false;
+               int chestChance = (int)(Math.random() * 10);
+               if (chestChance <= 2) {
+                  System.out.println("the chest was empty");
+                  chest = false;
+               } else if (chestChance <= 5) {
+                  System.out.println("the chest had a healing item");
+                  System.out.println("the healing item gives them  10 hit points");
+                  player.gainHP(10);
+                  chest = false;
+               } else {
+                  System.out.println("unlucky for " + name + " the chest was a mimic!");
+                  System.out.println("and they don't seem too happy");
+                  chestFight = true;
+                  chest = false;
+                  System.out.println("A brwal begins");
+               }
             } else if (input.equalsIgnoreCase("B")) {
-               System.out.println(name + " choose to fight them head on");
-               System.out.println();
-               choice = false;
-               groupFight = true;
+               System.out.println(name + " leave the chest un-opened, not wanting to risk it being a mimic");
+               chest = false;
             } else {
-            System.out.println("invalid input, try again");
+               System.out.println("i do not understand, could you try again?");
+            }
+         }  
+         Monster chestMimic = new Monster(10, 2, true);
+         while (chestFight) {
+            System.out.println("the Mimic attacks");
+            player.takeDMG(chestMimic.monsterAttck());
+            System.out.println(name + " has " + player.getHP() + " hit poins left");
+            System.out.println("what dose " + name + " do?");
+            System.out.println("<A> attack | <B> run away | <C> talk it out");
+            String tempInput2 = scanner.nextLine();
+            if (tempInput2.equalsIgnoreCase("A")) {
+               int tempDMG2 = player.attackDMG();
+               System.out.println("");
+               System.out.println(name + " attacks the chest mimic, dealing " + tempDMG2);
+               chestMimic.MTakeDMG(tempDMG2);
+               System.out.println("chest mimic has : " + chestMimic.getMonsterHP() + " hit points left");
+            } 
+            if (tempInput2.equalsIgnoreCase("B")) {
+               System.out.println("");
+               System.out.println(name + " tries to runs away");
+               int bagOdds = (int)(Math.random() * 10);
+               if (bagOdds < 3) {
+                  System.out.println("");
+                  System.out.println(name + " is stopped before they can get far");
+                  player.takeDMG(chestMimic.monsterAttck());
+                  System.out.println(name + " has " + player.getHP() + " hit points left");
+               } else {
+                  System.out.println("");
+                  System.out.println(name + " gets away");
+                  System.out.println(name + " continues on their adventure");
+                  chestFight = false;
+               }
+            }
+            if (tempInput2.equalsIgnoreCase("C")) {
+               System.out.println("");
+               System.out.println(name + " tries to talk it out");
+               int bagOdds = (int)(Math.random() * 10);
+               if (bagOdds < 5) {  
+                  System.out.println("");
+                  System.out.println("the chest mimic dosen't listen and attacks " + name);
+                  player.takeDMG(chestMimic.monsterAttck());
+                  System.out.println(name + " has " + player.getHP() + " hit points left");
+               } else {
+                  System.out.println("");
+                  System.out.println(name + " and the chest mimic talk it out");
+                  System.out.println("the chest mimic is no longer angry");
+                  chestFight = false;
+                  System.out.println("");
+                  System.out.println("after the encouter with the chest mimic");
+                  System.out.println(name + " feels better about themselves");
+                  System.out.println(name + " continues on their adventure");
+                  player.LVChange(-5);
+               }
+            }
+            if (player.isDead()) {
+            bagFight = false;
+            System.out.println(name + " tried and failed to defeat the chest Mimic");
+            System.out.println(name + " is no longer able to contine on this path and passes out.");
+            System.out.println("Game Over");
+            System.out.println("Thx for playing");
+            System.exit(0);
+            }
+            if (chestMimic.isMonsterDead()) {
+               chestFight = false;
+               player.LVChange(15);
+               System.out.println(name + " murded the chest mimic");
+               System.out.println(name + " hatred for the monsters grow.");
+               System.out.println(name + " heals for 20 hit points");
+               player.gainHP(20);
             }
          }
-         if (groupFight) {
-            System.out.println(name + " is filled with hate");
-            player.LVChange(10);
-            int count = 1;
-            while (groupFight) {
-               Monster groupMonsters = new Monster((25 * count), 3, true);
-               boolean fighting = true;
-               while (fighting) {
-                  System.out.println("one of the monsters attacks " + name);
-                  player.takeDMG(groupMonsters.monsterAttck());
-                  System.out.println(name + " has " + player.getHP() + " hit points left");
-                  System.out.println("what dose " + name + " do?");
-                  System.out.println("<A> runaway | <B> attck");
-                  boolean choice2 = true;
-                  while (choice2) {
-                     String input = scanner.nextLine();
-                     boolean combat = false;
-                     if (input.equalsIgnoreCase("A")) {
-                        System.out.println("you try to control " + name + " to run");
-                        System.out.println();
-                        choice2 = false;
-                        if (player.getLV() > 20) {
-                           System.out.println("but they refused");
-                           System.out.println(name + " is blinded by their hatred");
-                        } else {
-                           System.out.println(name + " manages to get away");
-                           fighting = false;
-                           groupFight = false;
-                        }
-                     } else if (input.equalsIgnoreCase("B")) {
-                        int tempDMG3 = player.attackDMG();
-                        System.out.println(name + " attcks the monster, dealing " + tempDMG3);
-                        groupMonsters.MTakeDMG(tempDMG3);
-                        System.out.println();
-                        choice2 = false;
-                        if (groupMonsters.isMonsterDead()) {
-                           player.LVChange(5);
-                           System.out.println(name + " murded one of the monsters");
-                           System.out.println(name + " hatred for the monsters grow.");
-                           System.out.println(name + " heals for 25 hit points");
+         System.out.println("");
+         System.out.println(name + " travles once again. exploring the area");
+         System.out.println("the path a head splits");
+         System.out.println("to the right, a dark ally way with a sign that says:");
+         System.out.println("\"ToTallY NoT DangerOuS ShORt CuT\"");
+         System.out.println("on the left is path to a village, with a sign that says");
+         System.out.println("To flurryVill");
+         System.out.println("which way dose " + name + " go?");
+         System.out.println("<A> Right | <B> Left");
+         boolean leftRight = true;
+         boolean shortCut = false;
+         while (leftRight) {
+            String input = scanner.nextLine();
+            if (input.equalsIgnoreCase("A")) {
+               System.out.println(name + " goes right, into the dark ally");
+               System.out.println();
+               shortCut = true;
+               leftRight = false;
+            } else if (input.equalsIgnoreCase("B")) {
+               System.out.println(name + " goes left, into flurryVill");
+               System.out.println();
+               leftRight = false;
+            } else {
+               System.out.println("invalid input, try again");
+            }
+         }
+         if (shortCut) {
+            System.out.println("as " + name + " walks into the dark ally");
+            System.out.println("their path behind them was blocked by fallen bolders!");
+            System.out.println("just as that happens, a gang of monsters apears infront of them");
+            System.out.println("and they don't look frendly");
+            System.out.println("what dose " + name + " do?");
+            System.out.println("<A> make a run for it | <B> fight them head on");
+            boolean choice = true;
+            boolean groupFight = false;
+            while (choice) {
+               String input = scanner.nextLine();
+               if (input.equalsIgnoreCase("A")) {
+                  System.out.println(name + " makes a run for it");
+                  System.out.println("getting out of there before the group of monsters can react");
+                  System.out.println();
+                  choice = false;
+               } else if (input.equalsIgnoreCase("B")) {
+                  System.out.println(name + " choose to fight them head on");
+                  System.out.println();
+                  choice = false;
+                  groupFight = true;
+               } else {
+               System.out.println("invalid input, try again");
+               }
+            }
+            if (groupFight) {
+               System.out.println(name + " is filled with hate");
+               player.LVChange(10);
+               int count = 1;
+               while (groupFight) {
+                  Monster groupMonsters = new Monster((25 * count), 3, true);
+                  boolean fighting = true;
+                  while (fighting) {
+                     System.out.println("one of the monsters attacks " + name);
+                     player.takeDMG(groupMonsters.monsterAttck());
+                     System.out.println(name + " has " + player.getHP() + " hit points left");
+                     System.out.println("what dose " + name + " do?");
+                     System.out.println("<A> runaway | <B> attck");
+                     boolean choice2 = true;
+                     while (choice2) {
+                        String input = scanner.nextLine();
+                        boolean combat = false;
+                        if (input.equalsIgnoreCase("A")) {
+                           System.out.println("you try to control " + name + " to run");
                            System.out.println();
-                           player.gainHP(25);
-                           count++;
+                           choice2 = false;
+                           if (player.getLV() > 20) {
+                              System.out.println("but they refused");
+                              System.out.println(name + " is blinded by their hatred");
+                           } else {
+                              System.out.println(name + " manages to get away");
+                              fighting = false;
+                              groupFight = false;
+                           }
+                        } else if (input.equalsIgnoreCase("B")) {
+                           int tempDMG3 = player.attackDMG();
+                           System.out.println(name + " attcks the monster, dealing " + tempDMG3);
+                           groupMonsters.MTakeDMG(tempDMG3);
+                           System.out.println();
+                           choice2 = false;
+                           if (groupMonsters.isMonsterDead()) {
+                              player.LVChange(5);
+                              System.out.println(name + " murded one of the monsters");
+                              System.out.println(name + " hatred for the monsters grow.");
+                              System.out.println(name + " heals for 25 hit points");
+                              System.out.println();
+                              player.gainHP(25);
+                              count++;
+                           }
+                           if (count >= 5) {
+                              System.out.println(name + " killed them all");
+                              System.out.println("not leaving a soul alive");
+                              System.out.println(name + " feels thier sins crawing on thier back...");
+                              player.LVChange(40);
+                              fighting = false;
+                              groupFight = false;
+                           }
+                        } else {
+                           System.out.println("invalid input, try again");
                         }
-                        if (count >= 5) {
-                           System.out.println(name + " killed them all");
-                           System.out.println("not leaving a soul alive");
-                           System.out.println(name + " feels thier sins crawing on thier back...");
-                           player.LVChange(40);
-                           fighting = false;
-                           groupFight = false;
-                        }
-                     } else {
-                        System.out.println("invalid input, try again");
                      }
-                  }
-                  if (player.isDead()) {
-                     System.out.println(name + " tried and failed to defeat the group of monsters");
-                     System.out.println(name + " is no longer able to contine on this path and passes out.");
-                     System.out.println("Game Over");
-                     System.out.println("Thx for playing");
-                     System.exit(0);
+                     if (player.isDead()) {
+                        System.out.println(name + " tried and failed to defeat the group of monsters");
+                        System.out.println(name + " is no longer able to contine on this path and passes out.");
+                        System.out.println("Game Over");
+                        System.out.println("Thx for playing");
+                        System.exit(0);
+                     }
                   }
                }
             }
-         }
-         System.out.println(name + " makes it out the dark allyway");
-         System.out.println("they find themselves infront of a gray door");
-         System.out.println("there's no way back. only forward");
-      } else {
-         System.out.println("as " + name + " makes their way to flurryVill");
-         System.out.println("they come across a raccoon");
-         System.out.println("the raccoon stands on its hine legs, its paws out at you");
-         System.out.println("it was obvouse that it was wanting something from " + name);
-         System.out.println("what dose " + name + " give it?");
-         System.out.println("<A> a cookie | <B> a hand shake | <C> nothing | <D> A kick");
-         boolean choice = true;
-         while (choice) {
-            String input = scanner.nextLine();
-            if (input.equalsIgnoreCase("A")) {
-               System.out.println(name + " gives the raccoon a cookie");
-               System.out.println("the raccoon is very happy at this");
-               System.out.println("the raccoon climbs onto your shoulder");
-               System.out.println("it seems that he is going to travel with you");
-               hasRaccoon = true;
-               System.out.println();
-               choice = false;
-            } else if (input.equalsIgnoreCase("B")) {
-               System.out.println(name + " gives the raccoon a hand shake");
-               System.out.println("the raccoon takes the hand shake before moving along");
-               System.out.println();
-               choice = false;
-            } else if (input.equalsIgnoreCase("C")) {
-               System.out.println(name + " dosen't do anything");
-               System.out.println("after some time of waiting, the raccoon gose on its way");
-               System.out.println();
-               choice = false;
-            } else if (input.equalsIgnoreCase("D")) {
-               System.out.println(name + " kicks the Raccoon");
-               System.out.println("the Raccoon gose flying, seemingly never to be seen again");
-               System.out.println();
-               choice = false;
-            } else {
-            System.out.println("invalid input, try again");
+            System.out.println(name + " makes it out the dark allyway");
+            System.out.println("they find themselves infront of a gray door");
+            System.out.println("there's no way back. only forward");
+            System.out.println();
+            System.out.println();
+            System.out.println("going though the door");
+            System.out.println(name + " finds themselves infount of a throne");
+         } else {
+            System.out.println("as " + name + " makes their way to flurryVill");
+            System.out.println("they come across a raccoon");
+            System.out.println("the raccoon stands on its hine legs, its paws out at you");
+            System.out.println("it was obvouse that it was wanting something from " + name);
+            System.out.println("what dose " + name + " give it?");
+            System.out.println("<A> a cookie | <B> a hand shake | <C> nothing | <D> A kick");
+            boolean choice = true;
+            while (choice) {
+               String input = scanner.nextLine();
+               if (input.equalsIgnoreCase("A")) {
+                  System.out.println(name + " gives the raccoon a cookie");
+                  System.out.println("the raccoon is very happy at this");
+                  System.out.println("the raccoon climbs onto your shoulder");
+                  System.out.println("it seems that he is going to travel with you");
+                  hasRaccoon = true;
+                  System.out.println();
+                  choice = false;
+               } else if (input.equalsIgnoreCase("B")) {
+                  System.out.println(name + " gives the raccoon a hand shake");
+                  System.out.println("the raccoon takes the hand shake before moving along");
+                  System.out.println();
+                  choice = false;
+               } else if (input.equalsIgnoreCase("C")) {
+                  System.out.println(name + " dosen't do anything");
+                  System.out.println("after some time of waiting, the raccoon gose on its way");
+                  System.out.println();
+                  choice = false;
+               } else if (input.equalsIgnoreCase("D")) {
+                  System.out.println(name + " kicks the Raccoon");
+                  System.out.println("the Raccoon gose flying, seemingly never to be seen again");
+                  System.out.println();
+                  choice = false;
+               } else {
+               System.out.println("invalid input, try again");
+               }
             }
+            System.out.println("after the encounter with the raccoon");
+            System.out.println(name + "finds themselves sudenly telaported to a thorn room"); 
+            // Had to cut this part short due to lack of time
          }
-      }
-      System.out.println("the demo is over, thx for playing :3");
+         if (player.getLV() > 60) {
+            System.out.println("on the throne " + name + " finds a note");
+            System.out.println("the note says");
+            System.out.println("place holder for boss fight + bad ending");
+         } else if (player.getLV() < 0 && hasRaccoon) {
+            System.out.println("the Raccoon gets off your shoulder, and sits on the throne");
+            System.out.println("the Raccoon speaks");
+            System.out.println("you have shown love and kindness, and for that you have my blessing");
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            System.out.println("YOU wake up from your sleep, unable to remeber what you drempt of");
+            System.out.println("although, you do find a stuffed raccoon next to you");
+            System.out.println("weird");
+            System.out.println();
+            System.out.println("BEST ENDING");
+            System.out.println("THE END!!!");
+         } else {
+            System.out.println(name + " sees  a door way behind the throne, and gose though it");
+            System.out.println("Game over. ending: nutral");
+         }
+         System.out.println("the demo is over, thx for playing :3");
       } else {
          System.out.println("congdulations. you ended the program.");
          System.out.println("HINT: yes");
